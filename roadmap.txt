@@ -1,0 +1,6 @@
+Allocate a buffer - stores temporary data read from the file descriptor.
+read from the file descriptor into the buffer.
+Continue reading until a newline (\n) or EOF (end of file) is encountered.
+Store the currently read characters
+If a newline (\n) is found, extract the line from the buffer and return it.
+If no newline is found, keep appending the characters to a temporary storage until the full line
