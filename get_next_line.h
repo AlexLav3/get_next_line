@@ -6,7 +6,7 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:08 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/02 00:26:58 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:26:53 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
 char		*get_next_line(int fd);
 void		*ft_calloc(size_t nmemb, size_t size);
-int			is_newl(char *str);
 char		*ft_strlcpy(char *dst, char *src, size_t size);
-static char	*read_from_f(int fd);
 int			ft_strlen(char *str);
+char		*cut_line(char *str);
+char		*get_rest(char *str);
 
 #endif
