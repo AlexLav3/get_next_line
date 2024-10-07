@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <string.h> // for strchr delete later
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 20
@@ -29,5 +30,6 @@ int		ft_strlen(char *str);
 char	*cut_line(char *str);
 char	*get_rest(char *str);
 char	*read_from_f(int fd, char *read_line);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif
