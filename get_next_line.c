@@ -6,7 +6,7 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:18 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/15 21:52:13 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/15 23:02:13 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*read_from_f(int fd, char *read_line)
 		storage_l[bytes_read] = '\0';
 		read_line = ft_strjoin(read_line, storage_l);
 		if (!read_line)
-			return ((free(read_line)), (NULL));
+			return (free(storage_l), (NULL));
 	}
 	return (free(storage_l), (read_line));
 }
@@ -81,7 +81,7 @@ char	*get_rest(char *str)
 	j++;
 	remainder = malloc(ft_strlen(str) - j + 1);
 	if (!remainder)
-		return (NULL);
+		return (free(str), (NULL));
 	while (str[j])
 		remainder[i++] = str[j++];
 	remainder[i] = '\0';
@@ -101,41 +101,45 @@ char	*get_next_line(int fd)
 		return (NULL);
 	f_line = cut_line(st_line);
 	if (!f_line)
+	{
+		free(st_line);
+		st_line = NULL;
 		return (NULL);
+	}
 	st_line = get_rest(st_line);
 	return (f_line);
 }
-int	main(void)
-{
-	int		fd;
-	char	*next_line;
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*next_line;
 
-	fd = open("example.txt", O_RDONLY);
-	next_line = get_next_line(fd);
-	printf("%s", next_line);
-	free(next_line);
-	next_line = get_next_line(fd);
-	printf("%s", next_line);
-	free(next_line);
-	next_line = get_next_line(fd);
-	printf("%s", next_line);
-	free(next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	// next_line = get_next_line(fd);
-	// printf("%s", next_line);
-	close(fd);
-	return (0);
-}
+// 	fd = open("example.txt", O_RDONLY);
+// 	next_line = get_next_line(fd);
+// 	printf("%s", next_line);
+// 	free(next_line);
+// 	next_line = get_next_line(fd);
+// 	printf("%s", next_line);
+// 	// free(next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// free(next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
+// 	close(fd);
+// 	return (0);
+// }
