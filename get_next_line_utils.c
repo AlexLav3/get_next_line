@@ -6,7 +6,7 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:29 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/09 16:25:19 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:38:21 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+char	*ft_str(char *s1)
+{
+	if (!s1)
+	{
+		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	return (s1);
+}
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
@@ -31,12 +43,11 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		total_length;
 	char	*concat;
 
+	ft_str(s1);
 	if (!s1 || !s2)
 		return (NULL);
 	total_length = ft_strlen(s1) + ft_strlen(s2);
 	concat = malloc((total_length + 1));
-	if (!concat)
-		return (NULL);
 	i = 0;
 	while (s1[i])
 	{
@@ -50,6 +61,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	concat[i + j] = '\0';
+	free(s1);
 	return (concat);
 }
 
