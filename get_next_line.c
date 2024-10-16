@@ -6,7 +6,7 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:18 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/15 23:02:13 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/16 19:14:01 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ char	*read_from_f(int fd, char *read_line)
 		bytes_read = read(fd, storage_l, BUFFER_SIZE);
 		if (bytes_read < 0)
 			return ((free(storage_l), free(read_line)), (NULL));
-		if (bytes_read == 0)
-			break ;
 		storage_l[bytes_read] = '\0';
 		read_line = ft_strjoin(read_line, storage_l);
 		if (!read_line)
 			return (free(storage_l), (NULL));
+		if (ft_strchr(storage_l, '\n'))
+			break ;
 	}
 	return (free(storage_l), (read_line));
 }
@@ -112,14 +112,18 @@ char	*get_next_line(int fd)
 // int	main(void)
 // {
 // 	int		fd;
+// 	char	a;
 // 	char	*next_line;
 
-// 	fd = open("example.txt", O_RDONLY);
+// 	a = 0;
+// 	fd = open("example.txt",O_RDONLY);
 // 	next_line = get_next_line(fd);
-// 	printf("%s", next_line);
-// 	free(next_line);
-// 	next_line = get_next_line(fd);
-// 	printf("%s", next_line);
+// 	printf("%zd", read(fd, &a, 1));
+// 	write(1, &a, 1);
+// 	// printf("%s", next_line);
+// 	// free(next_line);
+// 	// next_line = get_next_line(fd);
+// 	// printf("%s", next_line);
 // 	// free(next_line);
 // 	// next_line = get_next_line(fd);
 // 	// printf("%s", next_line);
