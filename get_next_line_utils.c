@@ -6,7 +6,7 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:29 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/15 18:38:21 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:15:31 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_str(char *s1)
-{
-	if (!s1)
-	{
-		s1 = malloc(1);
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
-	}
-	return (s1);
-}
-
 char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
@@ -43,29 +31,22 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		total_length;
 	char	*concat;
 
-	ft_str(s1);
-	if (!s1 || !s2)
-		return (NULL);
 	total_length = ft_strlen(s1) + ft_strlen(s2);
 	concat = malloc((total_length + 1));
-	i = 0;
-	while (s1[i])
-	{
+	if (!concat)
+		return (free(s1), NULL);
+	i = -1;
+	while (s1[++i])
 		concat[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
+	j = -1;
+	while (s2[++j])
 		concat[i + j] = s2[j];
-		j++;
-	}
 	concat[i + j] = '\0';
 	free(s1);
 	return (concat);
 }
 
-const char	*ft_strchr(const char *s, char c)
+int	ft_strchr(const char *s, char c)
 {
 	int	i;
 
@@ -74,11 +55,11 @@ const char	*ft_strchr(const char *s, char c)
 	{
 		if (s[i] == c)
 		{
-			return (&s[i]);
+			return (1);
 		}
 		i++;
 	}
 	if (c == '\0')
-		return (&s[i]);
-	return (NULL);
+		return (1);
+	return (0);
 }

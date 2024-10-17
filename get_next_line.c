@@ -6,11 +6,23 @@
 /*   By: elavrich <elavrich@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:39:18 by elavrich          #+#    #+#             */
-/*   Updated: 2024/10/16 19:14:01 by elavrich         ###   ########.fr       */
+/*   Updated: 2024/10/17 20:02:40 by elavrich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*norm(char *read_line)
+{
+	if (!read_line)
+	{
+		read_line = malloc(1);
+		if (!read_line)
+			return (NULL);
+		read_line[0] = '\0';
+	}
+	return (read_line);
+}
 
 char	*read_from_f(int fd, char *read_line)
 {
@@ -20,25 +32,23 @@ char	*read_from_f(int fd, char *read_line)
 	storage_l = malloc(BUFFER_SIZE + 1);
 	if (!storage_l)
 		return (NULL);
+	read_line = norm(read_line);
 	if (!read_line)
-	{
-		read_line = malloc(1);
-		read_line[0] = '\0';
-	}
+		return (free(storage_l), NULL);
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, storage_l, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return ((free(storage_l), free(read_line)), (NULL));
+			return (free(storage_l), free(read_line), NULL);
 		storage_l[bytes_read] = '\0';
 		read_line = ft_strjoin(read_line, storage_l);
 		if (!read_line)
-			return (free(storage_l), (NULL));
+			return (free(storage_l), free(read_line), NULL);
 		if (ft_strchr(storage_l, '\n'))
 			break ;
 	}
-	return (free(storage_l), (read_line));
+	return (free(storage_l), read_line);
 }
 
 char	*cut_line(char *str)
@@ -47,11 +57,13 @@ char	*cut_line(char *str)
 	char	*fin_line;
 
 	i = 0;
-	if (!str[i])
+	if (!str || str[0] == '\0')
 		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	fin_line = malloc(i + 2);
+	if (str[i] == '\n')
+		i++;
+	fin_line = malloc(i + 1);
 	if (!fin_line)
 		return (NULL);
 	i = 0;
@@ -79,6 +91,8 @@ char	*get_rest(char *str)
 	if (!str[j])
 		return ((free(str)), (NULL));
 	j++;
+	if (!str[j])
+		return ((free(str)), (NULL));
 	remainder = malloc(ft_strlen(str) - j + 1);
 	if (!remainder)
 		return (free(str), (NULL));
@@ -98,7 +112,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	st_line = read_from_f(fd, st_line);
 	if (!st_line)
-		return (NULL);
+		return (free(st_line), NULL);
 	f_line = cut_line(st_line);
 	if (!f_line)
 	{
@@ -107,6 +121,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	st_line = get_rest(st_line);
+	if (!st_line)
+	{
+		free(st_line);
+		st_line = NULL;
+	}
 	return (f_line);
 }
 // int	main(void)
@@ -116,34 +135,65 @@ char	*get_next_line(int fd)
 // 	char	*next_line;
 
 // 	a = 0;
-// 	fd = open("example.txt",O_RDONLY);
+// 	fd = open("/nfs/homes/elavrich/francinette/tests/get_next_line/fsoares/variable_nls.txt",
+// 			O_RDONLY);
 // 	next_line = get_next_line(fd);
-// 	printf("%zd", read(fd, &a, 1));
-// 	write(1, &a, 1);
-// 	// printf("%s", next_line);
-// 	// free(next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// free(next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// free(next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
-// 	// next_line = get_next_line(fd);
-// 	// printf("%s", next_line);
+// 	printf("1 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("2 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("3 %s", next_line);
+// 	// printf("%zd", read(fd, &a, 1));
+// 	// write(1, &a, 1);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("4 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("5 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("6 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("7 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("8 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("9 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("10 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("11 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("12 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("13 %s", next_line);
+// 	free(next_line);
+
+// 	next_line = get_next_line(fd);
+// 	printf("14 %s", next_line);
+// 	free(next_line);
 // 	close(fd);
 // 	return (0);
 // }
